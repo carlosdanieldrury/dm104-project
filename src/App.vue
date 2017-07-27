@@ -40,14 +40,21 @@
     <div class="description">
       Aproveite todas as promoções de doces do Quitutes d`Vó
     </div>
+    <div class="row equal">
+    <div class="product" v-for="product in products" v-bind:key="product.id">
+      <product :product="product"></product>
+    </div>
+    </div>
     
-    <product v-for="product in products" :product="product" v-bind:key="product.id"></product>
+    <h1>SSSSSSSSSSSSSSSSSS</h1>
+    <shopping-cart></shopping-cart>
+    <!--product class="row" v-for="product in products" :product="product" v-bind:key="product.id"></product-->
   </div>
 </template>
 
 <script>
 import Product from './components/Product'
-
+import ShoppingCart from './components/ShoppingCart'
 
 import Firebase from 'firebase'
 
@@ -62,7 +69,10 @@ export default {
   name: 'app',
 
   created () {
-    this.$http.get(this.API).then((response) => this.products = response.body)
+    this.$http.get(this.API).then((response) =>{
+      this.products = response.body
+      console.log(response.body)
+    } )
   },
   data () {
     return {
@@ -74,7 +84,8 @@ export default {
   },
 
   components: {
-    Product
+    Product,
+    ShoppingCart
   }
 }
 </script>
@@ -95,6 +106,17 @@ body {
   padding: 0px;
   margin: 0px;
   background-color: #464646;
+}
+
+.product {
+  width: 20rem;
+  margin: 60px;
+  max-height: 400px;
+}
+
+.equal {  
+    display: -webkit-flex;
+    display: flex;
 }
 
 #caption-logo {

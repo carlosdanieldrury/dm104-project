@@ -3,56 +3,56 @@ const products = [
     'id': 1,
     'title': 'Brigadeiro de pimenta',
     'description': 'Brigadeiro feito de pimenta vermelha',
-    'imageUrl': 'brigadeiro-1.png',
+    'imageUrl': 'https://image.ibb.co/fKpgPk/brigadeiro_1.png',
     'price': 2.50,
     'currencyFormat': 'R$'
   }, {
     'id': 2,
     'title': 'Brigadeiro de cappuccino',
     'description': 'Brigadeiro feito de café cappuccino',
-    'imageUrl': 'brigadeiro-2.png',
+    'imageUrl': 'https://image.ibb.co/gpuFjk/brigadeiro_2.png',
     'price': 2.50,
     'currencyFormat': 'R$'
   }, {
     'id': 3,
     'title': 'Brigadeiro de limão',
     'description': 'Brigadeiro feito de limão',
-    'imageUrl': 'brigadeiro-3.png',
+    'imageUrl': 'https://image.ibb.co/imBHx5/brigadeiro_3.png',
     'price': 2.50,
     'currencyFormat': 'R$'
   }, {
     'id': 4,
     'title': 'Brigadeiro de chocolate meio amargo',
     'description': 'Brigadeiro feito de chocolate meio amargo',
-    'imageUrl': 'brigadeiro-4.png',
+    'imageUrl': 'https://image.ibb.co/bVegPk/brigadeiro_4.png',
     'price': 2.50,
     'currencyFormat': 'R$'
   }, {
     'id': 5,
     'title': 'Brigadeiro de morango',
     'description': 'Brigadeiro feito de morango',
-    'imageUrl': 'brigadeiro-5.png',
+    'imageUrl': 'https://image.ibb.co/jUtKAQ/brigadeiro_5.png',
     'price': 2.50,
     'currencyFormat': 'R$'
   }, {
     'id': 6,
     'title': 'Brigadeiro de churros',
     'description': 'Brigadeiro feito de churros',
-    'imageUrl': 'brigadeiro-6.png',
+    'imageUrl': 'https://image.ibb.co/ktoVH5/brigadeiro_6.png',
     'price': 2.50,
     'currencyFormat': 'R$'
   }, {
     'id': 7,
     'title': 'Brigadeiro de castanha',
     'description': 'Brigadeiro feito de castanha',
-    'imageUrl': 'brigadeiro-7.png',
+    'imageUrl': 'https://image.ibb.co/jzZ4c5/brigadeiro_7.png',
     'price': 2.50,
     'currencyFormat': 'R$'
   }, {
     'id': 8,
     'title': 'Brigadeiro de paçoca',
     'description': 'Brigadeiro feito de paçoca',
-    'imageUrl': 'brigadeiro-8.png',
+    'imageUrl': 'https://image.ibb.co/m4omqQ/brigadeiro_8.png',
     'price': 2.50,
     'currencyFormat': 'R$'
   }

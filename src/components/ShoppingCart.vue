@@ -1,53 +1,228 @@
-<template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank">Forum</a></li>
-      <li><a href="https://gitter.im/vuejs/vue" target="_blank">Gitter Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank">Twitter</a></li>
-      <br>
-      <li><a href="http://vuejs-templates.github.io/webpack/" target="_blank">Docs for This Template</a></li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li><a href="http://router.vuejs.org/" target="_blank">vue-router</a></li>
-      <li><a href="http://vuex.vuejs.org/" target="_blank">vuex</a></li>
-      <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
-    </ul>
-  </div>
-</template>
+<template> 
+  <div class="shop" v-show="!verified">
+      <h3>New Arrivals</h3>
+      <ul>
+        <li v-for="item in shop">
+          <div>
+            <h5>{{ item.name }}</h5>
+            <p>${{ item.price }}</p>
+            <button @click="addToCart(item)">Add to cart</button>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </template>
 
 <script>
+
 export default {
-  name: 'hello',
-  data () {
+  name: 'shopping-cart',
+  props: ['checkoutBool', 'cart', 'cartSize', 'cartSubTotal', 'tax', 'cartTotal'],
+
+  data: function() {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      showCart: false
+    }
+  },
+
+  filters: {
+    customPluralize: function(cart) {      
+      var newName;
+
+      if(cart.quantity > 1) {
+        if(cart.product === "Peach") {
+          newName = cart.product + "es";
+        } else if(cart.product === "Puppy") {
+          newName = cart.product + "ies";
+          newName = newName.replace("y", "");
+        } else {
+          newName = cart.product + "s";
+        }
+
+        return newName;
+      }
+
+      return cart.product;
+    },
+
+    cartSize: function(cart) {
+      var cartSize = 0;
+
+      for (var i = 0; i < cart.length; i++) {
+        cartSize += cart[i].quantity;
+      }
+
+      return cartSize;
+    }
+  },
+
+  methods: {
+    removeProduct: function(product) {
+      vue.cart.$remove(product);
+      vue.cartSubTotal = vue.cartSubTotal - (product.price * product.quantity);
+      vue.cartTotal = vue.cartSubTotal + (vue.tax * vue.cartSubTotal);
+
+      if(vue.cart.length <= 0) {
+        vue.checkoutBool = false;
+      }
+    },
+
+    clearCart: function() {
+      vue.cart = [];
+      vue.cartSubTotal = 0;
+      vue.cartTotal = 0;
+      vue.checkoutBool = false;
+      this.showCart = false;
+    },
+
+    quantityChange: function(product, direction) {
+      var qtyChange;
+
+      for (var i = 0; i < vue.cart.length; i++) {
+        if (vue.cart[i].sku === product.sku) {
+
+          var newProduct = vue.cart[i];
+
+          if(direction === "incriment") {
+            newProduct.quantity = newProduct.quantity + 1;
+            vue.cart.$set(i, newProduct);
+
+          } else {
+            newProduct.quantity = newProduct.quantity - 1;
+
+            if(newProduct.quantity == 0) {
+              vue.cart.$remove(newProduct);
+
+            } else {
+              vue.cart.$set(i, newProduct);
+            }
+          }
+        }
+      }
+
+      if(direction === "incriment") {
+        vue.cartSubTotal = vue.cartSubTotal + product.price;
+
+      } else {
+        vue.cartSubTotal = vue.cartSubTotal - product.price;
+      }
+
+      vue.cartTotal = vue.cartSubTotal + (vue.tax * vue.cartSubTotal);
+
+      if(vue.cart.length <= 0) {
+        vue.checkoutBool = false;
+      }
+    },
+    //send our request up the chain, to our parent
+    //our parent catches the event, and sends the request back down
+    propagateCheckout: function() {
+      vue.$dispatch("checkoutRequest");
+    }
+}
+
+}
+
+</script>
+<style scoped>
+
+* {
+     margin: 0 auto;
+    padding: 0.5em;
+    text-align: center;
+}
+ 
+  .cart {
+    position: fixed;
+    right: 0em;
+    top: 0em;
+    text-align: right;
+    background: rgba(0,0,0,0.85);
+    color: white;
+    z-index: 1;
+
+    .fa-shopping-cart, .cart-size {
+      cursor: pointer;
+      font-size: 1.25em;
+      user-select: none;
+    }
+
+    .fa-shopping-cart {
+      padding: 1em 1em 1em 0;
+    }
+
+    .cart-size {
+      padding: 1em 0 1em 1em;
+    }
+
+
+    .cart-items {
+      padding: 0 1em 2em 1em;
+
+      .cartTable {
+        width: 20em;
+      }
+      
+      .cartImage {
+        width: 4em;
+        height: 4em;
+        margin: 0.5em auto;
+        position: relative;
+        cursor: pointer;
+        
+        &:after {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0,0,0,0.25);
+          transition: all 0.1s;
+        }
+        
+        i {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          font-size: 1.5em;
+          z-index: 1;
+          transition: all 0.25s;
+        }
+        
+        &:hover {
+          i {
+            text-shadow: 1px 2px 5px black;
+          }
+          
+          &:after {
+            background: rgba(0,0,0,0.5);
+          }
+        }
+        
+        &:active {
+            i {
+            text-shadow: 0px 0px 1px black;
+          }
+        }
+      }
+
+      .cartSubTotal {
+        border-top: 1px solid white;
+        font-size: 1.25em;
+      }
+
+      .clearCart {
+        float: left;
+        margin-top: 2em;
+        margin-bottom: 1.25em;
+      }
+      
+      .checkoutCart {
+        float: right;
+        margin-top: 2em;
+        margin-bottom: 1.25em;
+      }
     }
   }
-}
-</script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
-}
 </style>
