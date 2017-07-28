@@ -1,22 +1,19 @@
 <template>
   <div class="product">
-
-
     <div class="row shop">
-          <div>
-          <li>
-            <div class="product-title">
-              <h3>{{ product.title }}</h3>
-              <p>R$ {{ product.price }}</p>
-            </div>
-
-            <img :src="product.imageUrl">
-            <!--button @click="addToCart(item)">Add to cart</button-->
-            <b-button :variant="'outline-success'" href="">
-                Adicionar ao carrinho
-            </b-button>
-            </li>
+        <div class="product-block">
+          <div class="product-title">
+            <h3>{{ product.title }}</h3>
+            <p>R$ {{ product.price }}</p>
           </div>
+
+          <img :src="product.imageUrl">
+          <!--button @click="addToCart(item)">Add to cart</button-->
+          <b-button :variant="'outline-success'" v-on:click="addls()">
+              Adicionar ao carrinho
+          </b-button>
+
+        </div>
     </div>
 
 
@@ -44,7 +41,7 @@ import BootstrapVue from 'bootstrap-vue'
 
 export default {
   name: 'product',
-  props: ['product'],
+  props: ['product', 'localStorageParent', 'getls'],
 
   created () {
     this.imageUrl = this.product.imageUrl;
@@ -57,7 +54,10 @@ export default {
   },
 
   methods: {
-
+    addls() {
+      console.log('ls' , this.localStorageParent)
+      this.localStorageParent();
+    }
   },
   computed: {
  
@@ -67,15 +67,18 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.card {
-  width: 20rem;
-}
 
 .shop {
-  width: 20rem;
-  margin: 20px;
+  width: 100%;
+  margin-top: 0px;
   max-height: 400px;
-  h3 {
+  background: #fff;
+
+  img {
+    margin-top: 0px;
+  }
+
+  /*h3 {
     position: absolute;
     top: -85px;
     left: -30px;
@@ -84,21 +87,19 @@ export default {
     font-size: 4em;
     font-weight: bold;
     letter-spacing: -2px;
-  }
-  ul {
-    margin-top: 90px;
-  }
-  li div {
-    padding: 30px;
+  }*/
+
+
+  .product-block {
     background: #fff;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     box-shadow: 1px 1px 6px 0 rgba(0, 0, 0, 0.3);
   }
-  button {
+
+  b-button {
     color: white;
-    border: 0;
+    border: 1px;
     background: #00ADB5;
-    margin: 0;
     transition: all .1s ease-out;
     &:hover {
       background: darken(#00ADB5, 5%)
@@ -106,20 +107,18 @@ export default {
   }
 }
 
-.product {
-  width: 20rem;
-  max-height: 400px;
-}
 
 .product-title {
   background-color: black;
   color: white;
-  max-height: 50px;
+  max-height: 100px;
+  margin-top: 30px;
+  margin-bottom: 0px;
   border-radius: 5px 5px 0px 0px;
 
   h3 {
     font-family: sans-serif;
-    font-size: 4em;
+    font-size: 8em;
     font-weight: bold;
     letter-spacing: -2px;
     color: white;

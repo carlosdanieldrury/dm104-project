@@ -19,109 +19,26 @@ export default {
   name: 'shopping-cart',
   props: ['checkoutBool', 'cart', 'cartSize', 'cartSubTotal', 'tax', 'cartTotal'],
 
-  data: function() {
-    return {
-      showCart: false
+  computed: {
+    total() {
+      var total = 0;
+      for(var i = 0; i < this.items.length; i++) {
+        total += this.items[i].price;
+      }
+      return total;
     }
   },
-
-  filters: {
-    customPluralize: function(cart) {      
-      var newName;
-
-      if(cart.quantity > 1) {
-        if(cart.product === "Peach") {
-          newName = cart.product + "es";
-        } else if(cart.product === "Puppy") {
-          newName = cart.product + "ies";
-          newName = newName.replace("y", "");
-        } else {
-          newName = cart.product + "s";
-        }
-
-        return newName;
-      }
-
-      return cart.product;
-    },
-
-    cartSize: function(cart) {
-      var cartSize = 0;
-
-      for (var i = 0; i < cart.length; i++) {
-        cartSize += cart[i].quantity;
-      }
-
-      return cartSize;
-    }
-  },
-
   methods: {
-    removeProduct: function(product) {
-      vue.cart.$remove(product);
-      vue.cartSubTotal = vue.cartSubTotal - (product.price * product.quantity);
-      vue.cartTotal = vue.cartSubTotal + (vue.tax * vue.cartSubTotal);
-
-      if(vue.cart.length <= 0) {
-        vue.checkoutBool = false;
-      }
+    addToCart(item) {
+      item.quantity += 1;
+      this.items.push(item);
     },
-
-    clearCart: function() {
-      vue.cart = [];
-      vue.cartSubTotal = 0;
-      vue.cartTotal = 0;
-      vue.checkoutBool = false;
-      this.showCart = false;
-    },
-
-    quantityChange: function(product, direction) {
-      var qtyChange;
-
-      for (var i = 0; i < vue.cart.length; i++) {
-        if (vue.cart[i].sku === product.sku) {
-
-          var newProduct = vue.cart[i];
-
-          if(direction === "incriment") {
-            newProduct.quantity = newProduct.quantity + 1;
-            vue.cart.$set(i, newProduct);
-
-          } else {
-            newProduct.quantity = newProduct.quantity - 1;
-
-            if(newProduct.quantity == 0) {
-              vue.cart.$remove(newProduct);
-
-            } else {
-              vue.cart.$set(i, newProduct);
-            }
-          }
-        }
-      }
-
-      if(direction === "incriment") {
-        vue.cartSubTotal = vue.cartSubTotal + product.price;
-
-      } else {
-        vue.cartSubTotal = vue.cartSubTotal - product.price;
-      }
-
-      vue.cartTotal = vue.cartSubTotal + (vue.tax * vue.cartSubTotal);
-
-      if(vue.cart.length <= 0) {
-        vue.checkoutBool = false;
-      }
-    },
-    //send our request up the chain, to our parent
-    //our parent catches the event, and sends the request back down
-    propagateCheckout: function() {
-      vue.$dispatch("checkoutRequest");
+    removeFromCart(item) {
+      item.quantity -= 1;
+      this.items.splice(this.items.indexOf(item), 1);
     }
+  }
 }
-
-}
-
 </script>
 <style scoped>
 

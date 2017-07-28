@@ -6,10 +6,12 @@ import BootstrapVue from 'bootstrap-vue'
 import VueResource from 'vue-resource'
 import VueResourceMock from 'vue-resource-mock'
 import MockData from './api/products'
+import VueLocalStorage from 'vue-localstorage'
 
 Vue.use(BootstrapVue)
 Vue.use(VueResource)
 Vue.use(VueResourceMock, MockData)
+Vue.use(VueLocalStorage)
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'

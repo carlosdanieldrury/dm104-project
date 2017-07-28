@@ -40,10 +40,10 @@
     <div class="description">
       Aproveite todas as promoções de doces do Quitutes d`Vó
     </div>
-    <div class="row equal">
-    <div class="product" v-for="product in products" v-bind:key="product.id">
-      <product :product="product"></product>
-    </div>
+    <div class="row div-products center">
+      <div class="product" v-for="product in products" v-bind:key="product.id">
+        <product localStorageParent="addToLocalStorage" getls="getFromLocalStorage" :product="product"></product>
+      </div>
     </div>
     
     <h1>SSSSSSSSSSSSSSSSSS</h1>
@@ -74,6 +74,16 @@ export default {
       console.log(response.body)
     } )
   },
+
+  localStorage: {
+    someObject: {
+      type: Object,
+      default: {
+        hello: 'world'
+      }
+    }
+  },
+
   data () {
     return {
       API: '/api/products',
@@ -81,6 +91,31 @@ export default {
     }
   },
   methods: {
+    addToLocalStorage() {
+      console.log(this.localStorageParent)
+      Vue.localStorage.setItem('someNumber', 123)
+      console.log(Vue.localStorage.getItem('someNumber'))
+    },
+    getFromLocalStorage() {
+      console.log(Vue.localStorage.getItem('someNumber'))
+    },
+    addToCart(item) {
+      item.quantity += 1;
+      this.items.push(item);
+    },
+    removeFromCart(item) {
+      item.quantity -= 1;
+      this.items.splice(this.items.indexOf(item), 1);
+    }
+  },
+  computed: {
+    total() {
+      var total = 0;
+      for(var i = 0; i < this.products.length; i++) {
+        total += this.products[i].price;
+      }
+      return total;
+    }
   },
 
   components: {
@@ -105,19 +140,20 @@ export default {
 body {
   padding: 0px;
   margin: 0px;
-  background-color: #464646;
 }
 
 .product {
-  width: 20rem;
+  width: 30rem;
   margin: 60px;
-  max-height: 400px;
+  margin-top: 0px;
+  max-height: 300px;
 }
 
-.equal {  
-    display: -webkit-flex;
-    display: flex;
+.div-products {
+    background: teal;
+    align-content: center;
 }
+
 
 #caption-logo {
     -moz-box-align: center;
