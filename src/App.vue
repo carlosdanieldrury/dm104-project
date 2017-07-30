@@ -7,29 +7,29 @@
 
     <div class="carousel">
 
-        <b-carousel controls indicators :interval="6000" background="white">
+      <b-carousel controls indicators :interval="6000" background="white">
 
-        <!-- Text slides -->
-        <b-carousel-slide background="white" height="400px"
-                          caption="brigadeiros"
-                          text="Adoce sua vida">
+      <!-- Text slides -->
+      <b-carousel-slide background="white" height="400px"
+                        caption="brigadeiros"
+                        text="Adoce sua vida">
 
-                          <img src="./assets/images/carousel/image1.png">
-        </b-carousel-slide>
+                        <img src="./assets/images/carousel/image1.png">
+      </b-carousel-slide>
 
-        <!-- Slides with custom text -->
-        <b-carousel-slide background="white" height="400px" caption="brigadeiros"
-                          text="Adoce sua vida">
-          <img src="./assets/images/carousel/image2.png">
-        </b-carousel-slide>
+      <!-- Slides with custom text -->
+      <b-carousel-slide background="white" height="400px" caption="brigadeiros"
+                        text="Adoce sua vida">
+        <img src="./assets/images/carousel/image2.png">
+      </b-carousel-slide>
 
-        <!-- Slides with image -->
-        <b-carousel-slide background="white" height="400px" caption="brigadeiros"
-                          text="Adoce sua vida">
-          <img src="./assets/images/carousel/image3.png">
-        </b-carousel-slide>
+      <!-- Slides with image -->
+      <b-carousel-slide background="white" height="400px" caption="brigadeiros"
+                        text="Adoce sua vida">
+        <img src="./assets/images/carousel/image3.png">
+      </b-carousel-slide>
 
-        </b-carousel>
+      </b-carousel>
 
     </div>
 
@@ -46,7 +46,6 @@
   
     <shopping-cart :doCheckoutParent='doCheckout' :removeFromCartParent='removeFromCart' v-bind:items="items"></shopping-cart>
     <orders :orders='orders'></orders>
-    <!--product class="row" v-for="product in products" :product="product" v-bind:key="product.id"></product-->
   </div>
 </template>
 
@@ -79,7 +78,6 @@ export default {
       this.products = response.body
       console.log(response.body)
       this.getFromLocalStorage();
-      //this.items = this.getFromLocalStorage() == null ? [] : this.getFromLocalStorage();
     } )
   },
 
@@ -267,14 +265,6 @@ pre {
   padding: 0px;
   margin: 0px
 }
-
-/*@media only screen and (max-width: 767px) {
-  body {
-    /* The file size of this background image is 93% smaller
-       to improve page load speed on mobile internet connections */
-    /*background-image: url(./assets/images/background-photo-mobile-devices.jpg);*/
-  /*}
-}*/
 
 .logo {
   margin-top: 150px;

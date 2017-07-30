@@ -6,18 +6,13 @@
             <h3>{{ product.title }}</h3>
             <p>R$ {{ product.price }}</p>
           </div>
-
           <img :src="product.imageUrl">
-          <!--button @click="addToCart(item)">Add to cart</button-->
           <b-button :variant="'outline-success'" v-on:click="addToCartChild(product)">
               Adicionar ao carrinho
           </b-button>
 
         </div>
     </div>
-
-
-
   </div>
 </template>
 
@@ -50,7 +45,6 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
 .shop {
@@ -62,17 +56,6 @@ export default {
   img {
     margin-top: 0px;
   }
-
-  /*h3 {
-    position: absolute;
-    top: -85px;
-    left: -30px;
-    color: rgba(255, 255, 255, 0.3);
-    font-family: sans-serif;
-    font-size: 4em;
-    font-weight: bold;
-    letter-spacing: -2px;
-  }*/
 
 
   .product-block {
