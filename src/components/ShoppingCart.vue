@@ -1,20 +1,19 @@
 <template> 
   <div class="shopping-cart">
-    <div class="products">
+    <div class="products" v-show="items.length > 0">
       <ul>
           <li v-for="item in items" :key="item.id" transition="fade">
             <img class="img-item-cart" :src="item.imageUrl">
-            <p><strong>{{ item.qtd }}</strong> - {{ item.title }} <i class="fa fa-trash" @click="removeFromCart(item)"></i></p>
+            <p><strong>{{ item.qtd }}</strong> - {{ item.title }} <i class="fa fa-trash" @click="removeFromCartChild(item)"></i></p>
           </li>
       </ul>
       <div>
-        <button @click="verified = true, showCart = false">Check out</button>
+        <button @click="verified = true, showCart = false, doCheckout()">Check out</button>
       </div>
 
-      <div v-show="items.length === 0">
-        <p>Your cart is empty!<p/>
-      </div>
-
+    </div>
+    <div v-show="items.length === 0">
+        <p>Seu carrinho está vazio!<p/>
     </div>
   </div>
 </template>
@@ -23,11 +22,10 @@
 
 export default {
   name: 'shopping-cart',
-  props: ['items'],
+  props: ['items', 'removeFromCartParent', 'doCheckoutParent'],
 
   data () {
     return {
-      items: []
     }
   },
 
@@ -41,9 +39,11 @@ export default {
     }
   },
   methods: {
-    removeFromCart(item) {
-      item.quantity -= 1;
-      this.items.splice(this.items.indexOf(item), 1);
+    removeFromCartChild(item) {
+      this.removeFromCartParent(item)
+    }, 
+    doCheckout () {
+      this.doCheckoutParent();
     }
   }
 }

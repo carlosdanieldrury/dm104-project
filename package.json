@@ -13,6 +13,7 @@
     "bootstrap": "^3.3.7",
     "bootstrap-vue": "^0.18.0",
     "firebase": "^4.1.5",
+    "font-awesome": "^4.7.0",
     "vue": "^2.3.3",
     "vue-chunk": "^1.0.0",
     "vue-localstorage": "^0.3.0",

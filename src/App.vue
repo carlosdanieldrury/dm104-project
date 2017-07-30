@@ -5,8 +5,6 @@
       <div id="caption-logo">Feito com carinho pela Vovó</div>
     </div>
 
-
-
     <div class="carousel">
 
         <b-carousel controls indicators :interval="6000" background="white">
@@ -35,19 +33,19 @@
 
     </div>
 
-
-
     <div class="description">
-      Aproveite todas as promoções de doces do Quitutes d`Vó
+      <h2>Aproveite todas as promoções de doces do Quitutes d`Vó</h2>
     </div>
+
+    <h1>PRODUTOS</h1>
     <div class="row div-products center">
       <div class="product" v-for="product in products" v-bind:key="product.id">
         <product :addToCartParent='addToCart' :product="product"></product>
       </div>
     </div>
-    
-    <h1>SSSSSSSSSSSSSSSSSS</h1>
-    <shopping-cart v-bind:items="items"></shopping-cart>
+  
+    <shopping-cart :doCheckoutParent='doCheckout' :removeFromCartParent='removeFromCart' v-bind:items="items"></shopping-cart>
+    <orders :orders='orders'></orders>
     <!--product class="row" v-for="product in products" :product="product" v-bind:key="product.id"></product-->
   </div>
 </template>
@@ -60,11 +58,18 @@ import Orders from './components/Orders'
 import Firebase from 'firebase'
 
 let config = {
-
+  apiKey: "AIzaSyAbSQmWUYEtJ3euIS2YjQCp-x2lzxo1r6k",
+  authDomain: "testfirebase-fe1d8.firebaseapp.com",
+  databaseURL: "https://testfirebase-fe1d8.firebaseio.com",
+  projectId: "testfirebase-fe1d8",
+  storageBucket: "testfirebase-fe1d8.appspot.com",
+  messagingSenderId: "14301186140"
 }
 
-//let app = Firebase.initializeApp(config);
-//let db = app.database();
+let app = Firebase.initializeApp(config);
+let db = app.database();
+
+const orderRef = db.ref('pedidos')
 
 export default {
   name: 'app',
@@ -73,9 +78,13 @@ export default {
     this.$http.get(this.API).then((response) =>{
       this.products = response.body
       console.log(response.body)
-      this.addToLocalStorage();
       this.getFromLocalStorage();
+      //this.items = this.getFromLocalStorage() == null ? [] : this.getFromLocalStorage();
     } )
+  },
+
+  firebase: {
+    orders: orderRef
   },
 
   localStorage: {
@@ -98,7 +107,7 @@ export default {
       API: '/api/products',
       products: [],
       orders: ['test'],
-      items: this.getFromLocalStorage()
+      items: []
     }
   },
   methods: {
@@ -107,16 +116,23 @@ export default {
     },
     getFromLocalStorage() {
       console.log(this.$localStorage.get('quitutes'))
-      return this.$localStorage.get('quitutes')
+      let result = this.$localStorage.get('quitutes')
+      this.items = result != null ? result : []
     },
     addToCart(item) {
-      item.quantity += 1;
       this.items.push(item);
       console.log('Item added to items ', item)
     },
     removeFromCart(item) {
-      item.quantity -= 1;
       this.items.splice(this.items.indexOf(item), 1);
+    },
+    doCheckout () {
+      let dataToBeSent = {
+        "items": this.items,
+        "date": new Date().toLocaleDateString()
+      }
+      orderRef.push(dataToBeSent)
+      this.items = []
     }
   },
   computed: {
