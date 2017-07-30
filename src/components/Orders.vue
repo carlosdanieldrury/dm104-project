@@ -1,22 +1,28 @@
 <template>
-  <div class="product">
-    <div class="row shop">
+  <div class="orders">
+    <div class="row">
         <div class="product-block">
+        <ul v-for="order in orders" :key="order['key']">
+            <ul>
+                <li v-for="item in order" :key="item.id">
+
+                </li>
+            </ul>
+
+        </ul>
           <div class="product-title">
-            <h3>{{ product.title }}</h3>
-            <p>R$ {{ product.price }}</p>
+            <h3>{{ item.title }}</h3>
+            <p>R$ {{ item.price }}</p>
+            <p>{{ item.qtd }}</p>
           </div>
 
-          <img :src="product.imageUrl">
           <!--button @click="addToCart(item)">Add to cart</button-->
-          <b-button :variant="'outline-success'" v-on:click="addToCartChild(product)">
+          <b-button :variant="'outline-success'" v-on:click="addls()">
               Adicionar ao carrinho
           </b-button>
 
         </div>
     </div>
-
-
 
   </div>
 </template>
@@ -26,23 +32,21 @@
 import BootstrapVue from 'bootstrap-vue'
 
 export default {
-  name: 'product',
-  props: ['product', 'addToCartParent'],
+  name: 'orders',
+  props: ['orders'],
 
   created () {
-    this.imageUrl = this.product.imageUrl;
+   
   },
 
   data () {
     return {
-      addToCart: null
+
     }
   },
 
   methods: {
-    addToCartChild(product) {
-      this.addToCartParent(product)
-    }
+    
   },
   computed: {
  

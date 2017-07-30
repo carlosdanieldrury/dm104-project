@@ -42,12 +42,12 @@
     </div>
     <div class="row div-products center">
       <div class="product" v-for="product in products" v-bind:key="product.id">
-        <product localStorageParent="addToLocalStorage" getls="getFromLocalStorage" :product="product"></product>
+        <product :addToCartParent='addToCart' :product="product"></product>
       </div>
     </div>
     
     <h1>SSSSSSSSSSSSSSSSSS</h1>
-    <shopping-cart></shopping-cart>
+    <shopping-cart v-bind:items="items"></shopping-cart>
     <!--product class="row" v-for="product in products" :product="product" v-bind:key="product.id"></product-->
   </div>
 </template>
@@ -55,6 +55,7 @@
 <script>
 import Product from './components/Product'
 import ShoppingCart from './components/ShoppingCart'
+import Orders from './components/Orders'
 
 import Firebase from 'firebase'
 
@@ -72,36 +73,46 @@ export default {
     this.$http.get(this.API).then((response) =>{
       this.products = response.body
       console.log(response.body)
+      this.addToLocalStorage();
+      this.getFromLocalStorage();
     } )
   },
 
   localStorage: {
-    someObject: {
+    quitutes: {
       type: Object,
       default: {
-        hello: 'world'
+        items: []
       }
+    }
+  },
+
+  watch: {
+    items () {
+      this.addToLocalStorage(this.items)
     }
   },
 
   data () {
     return {
       API: '/api/products',
-      products: []
+      products: [],
+      orders: ['test'],
+      items: this.getFromLocalStorage()
     }
   },
   methods: {
-    addToLocalStorage() {
-      console.log(this.localStorageParent)
-      Vue.localStorage.setItem('someNumber', 123)
-      console.log(Vue.localStorage.getItem('someNumber'))
+    addToLocalStorage(items) {
+      this.$localStorage.set('quitutes', items)
     },
     getFromLocalStorage() {
-      console.log(Vue.localStorage.getItem('someNumber'))
+      console.log(this.$localStorage.get('quitutes'))
+      return this.$localStorage.get('quitutes')
     },
     addToCart(item) {
       item.quantity += 1;
       this.items.push(item);
+      console.log('Item added to items ', item)
     },
     removeFromCart(item) {
       item.quantity -= 1;
@@ -120,7 +131,8 @@ export default {
 
   components: {
     Product,
-    ShoppingCart
+    ShoppingCart,
+    Orders
   }
 }
 </script>

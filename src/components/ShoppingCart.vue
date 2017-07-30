@@ -1,23 +1,35 @@
 <template> 
-  <div class="shop" v-show="!verified">
-      <h3>New Arrivals</h3>
+  <div class="shopping-cart">
+    <div class="products">
       <ul>
-        <li v-for="item in shop">
-          <div>
-            <h5>{{ item.name }}</h5>
-            <p>${{ item.price }}</p>
-            <button @click="addToCart(item)">Add to cart</button>
-          </div>
-        </li>
+          <li v-for="item in items" :key="item.id" transition="fade">
+            <img class="img-item-cart" :src="item.imageUrl">
+            <p><strong>{{ item.qtd }}</strong> - {{ item.title }} <i class="fa fa-trash" @click="removeFromCart(item)"></i></p>
+          </li>
       </ul>
+      <div>
+        <button @click="verified = true, showCart = false">Check out</button>
+      </div>
+
+      <div v-show="items.length === 0">
+        <p>Your cart is empty!<p/>
+      </div>
+
     </div>
-  </template>
+  </div>
+</template>
 
 <script>
 
 export default {
   name: 'shopping-cart',
-  props: ['checkoutBool', 'cart', 'cartSize', 'cartSubTotal', 'tax', 'cartTotal'],
+  props: ['items'],
+
+  data () {
+    return {
+      items: []
+    }
+  },
 
   computed: {
     total() {
@@ -29,10 +41,6 @@ export default {
     }
   },
   methods: {
-    addToCart(item) {
-      item.quantity += 1;
-      this.items.push(item);
-    },
     removeFromCart(item) {
       item.quantity -= 1;
       this.items.splice(this.items.indexOf(item), 1);
@@ -48,7 +56,12 @@ export default {
     text-align: center;
 }
  
-  .cart {
+   .img-item-cart {
+      max-width: 10px;
+      max-height: 10px;
+    }
+
+  .shopping-cart {
     position: fixed;
     right: 0em;
     top: 0em;
@@ -62,6 +75,8 @@ export default {
       font-size: 1.25em;
       user-select: none;
     }
+
+   
 
     .fa-shopping-cart {
       padding: 1em 1em 1em 0;
