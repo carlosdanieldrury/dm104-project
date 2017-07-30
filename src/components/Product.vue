@@ -7,10 +7,11 @@
             <p>R$ {{ product.price }}</p>
           </div>
           <img :src="product.imageUrl">
-          <b-button :variant="'outline-success'" v-on:click="addToCartChild(product)">
+          <div class="div-b-button">
+            <b-button :variant="'outline-success'" v-on:click="addToCartChild(product)">
               Adicionar ao carrinho
-          </b-button>
-
+            </b-button>
+          </div>
         </div>
     </div>
   </div>
@@ -50,7 +51,6 @@ export default {
 .shop {
   width: 100%;
   margin-top: 0px;
-  max-height: 400px;
   background: #fff;
 
   img {
@@ -60,7 +60,7 @@ export default {
 
   .product-block {
     background: #fff;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     box-shadow: 1px 1px 6px 0 rgba(0, 0, 0, 0.3);
   }
 
@@ -75,6 +75,9 @@ export default {
   }
 }
 
+.div-b-button {
+  height: 30px;
+}
 
 .product-title {
   background-color: black;

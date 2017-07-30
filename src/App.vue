@@ -39,13 +39,13 @@
 
     <h1>PRODUTOS</h1>
     <div class="row div-products center">
-      <div class="product" v-for="product in products" v-bind:key="product.id">
+      <div class="col-xs product" v-for="product in products" v-bind:key="product.id">
         <product :addToCartParent='addToCart' :product="product"></product>
       </div>
     </div>
   
     <shopping-cart :doCheckoutParent='doCheckout' :removeFromCartParent='removeFromCart' v-bind:items="items"></shopping-cart>
-    <orders :orders='orders'></orders>
+    <orders class="div-orders" :orders='orders'></orders>
   </div>
 </template>
 
@@ -76,7 +76,6 @@ export default {
   created () {
     this.$http.get(this.API).then((response) =>{
       this.products = response.body
-      console.log(response.body)
       this.getFromLocalStorage();
     } )
   },
@@ -88,9 +87,7 @@ export default {
   localStorage: {
     quitutes: {
       type: Object,
-      default: {
-        items: []
-      }
+      default: []
     }
   },
 
@@ -104,7 +101,7 @@ export default {
     return {
       API: '/api/products',
       products: [],
-      orders: ['test'],
+      orders: [],
       items: []
     }
   },
@@ -113,13 +110,11 @@ export default {
       this.$localStorage.set('quitutes', items)
     },
     getFromLocalStorage() {
-      console.log(this.$localStorage.get('quitutes'))
       let result = this.$localStorage.get('quitutes')
-      this.items = result != null ? result : []
+      this.items = (result instanceof Array) ? result : []
     },
     addToCart(item) {
       this.items.push(item);
-      console.log('Item added to items ', item)
     },
     removeFromCart(item) {
       this.items.splice(this.items.indexOf(item), 1);
@@ -169,15 +164,15 @@ body {
 }
 
 .product {
-  width: 30rem;
   margin: 60px;
-  margin-top: 0px;
-  max-height: 300px;
 }
 
 .div-products {
-    background: teal;
     align-content: center;
+}
+
+.div-orders {
+  align-content: center;
 }
 
 
@@ -239,14 +234,9 @@ pre {
 }
 
 .parallax {
-    /* The image used */
     background-image: url(./assets/images/background-photo.jpg);
-    /* Set a specific height */
     min-height: 980px; 
-
     color: floralwhite;
-
-    /* Create the parallax scrolling effect */
     background-attachment: fixed;
     background-position: center;
     background-repeat: no-repeat;
