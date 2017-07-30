@@ -46,6 +46,9 @@
   
     <shopping-cart :doCheckoutParent='doCheckout' :removeFromCartParent='removeFromCart' v-bind:items="items"></shopping-cart>
     <orders class="div-orders" :orders='orders'></orders>
+    <div>
+      <h3>Temperatura em Santa Rita do Sapucaí: {{ kelvinToCelsius }}</h3>
+    </div>
   </div>
 </template>
 
@@ -66,7 +69,11 @@ let config = {
 }
 
 let app = Firebase.initializeApp(config);
+
 let db = app.database();
+
+let apiKeyWeather = '66bc5fdf794b9cafced10715a4f43a25'
+let urlWeatherSantaRita = 'http://api.openweathermap.org/data/2.5/weather?q=Santa Rita do Sapucaí&APPID=66bc5fdf794b9cafced10715a4f43a25'
 
 const orderRef = db.ref('pedidos')
 
@@ -77,7 +84,11 @@ export default {
     this.$http.get(this.API).then((response) =>{
       this.products = response.body
       this.getFromLocalStorage();
-    } )
+    } ),
+
+    this.$http.get(urlWeatherSantaRita).then((res) => {
+      this.temperaturaSantaRita = res.body.main.temp
+    })
   },
 
   firebase: {
@@ -102,7 +113,8 @@ export default {
       API: '/api/products',
       products: [],
       orders: [],
-      items: []
+      items: [],
+      temperaturaSantaRita: ''
     }
   },
   methods: {
@@ -131,10 +143,13 @@ export default {
   computed: {
     total() {
       var total = 0;
-      for(var i = 0; i < this.products.length; i++) {
-        total += this.products[i].price;
+      for(var i = 0; i < this.items.length; i++) {
+        total += this.items[i].price;
       }
       return total;
+    },
+    kelvinToCelsius () {
+      return this.temperaturaSantaRita - 273.15;
     }
   },
 
